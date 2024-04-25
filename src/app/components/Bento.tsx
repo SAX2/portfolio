@@ -69,15 +69,17 @@ const BentoItem = ({
       <h1 className="text-sm font-medium text-grey tracking-tight">{title}</h1>
       <div className="flex flex-col w-full gap-[10px]">
         {data.type !== "spotify" &&
-          data.data &&
           data.data.map((item: any) => {
             return <BentoSubItem data={item} key={item.title} />;
           })
         }
         {data.type === "spotify" && <Spotify />}
       </div>
-      {data.type === "skills" && (
-        <Link href={"/skills"} className="rounded-md px-[6px] py-1 border border-outline-sec bg-grey-card-sec text-sm font-medium flex items-center gap-1 justify-center">
+      {data.type !== "list" && data.type !== "spotify"  && (
+        <Link
+          href={`/${data.type}`}
+          className="rounded-md px-[6px] py-1 border border-outline-sec bg-grey-card-sec text-sm font-medium flex items-center gap-1 justify-center"
+        >
           See More <ChevronRight width={14} height={14} />
         </Link>
       )}

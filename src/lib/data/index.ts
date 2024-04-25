@@ -1,6 +1,7 @@
 import { Skills, Websites } from "../types";
 
 import Nodejs from '../../../public/images/nodejs.png'
+import Supabase from '../../../public/images/supabase.png'
 import Nextjs from '../../../public/images/nextjs.jpeg'
 import Tailwind from '../../../public/images/tailwind.png'
 import Figma from '../../../public/images/figma.svg'
@@ -16,6 +17,15 @@ const skills: Skills[] = [
     image: {
       url: Nodejs,
       background: "bg-[#1E1E1E]",
+      noBgImage: true,
+    }
+  },
+  {
+    title: "Supabase",
+    description: "NoSql database",
+    image: {
+      url: Supabase,
+      background: "bg-[#181818]",
       noBgImage: true,
     }
   },
@@ -108,7 +118,7 @@ export const bento = {
             {
               title: "Projects builded",
               className: "w-full h-fit",
-              data: { type: "list", data: builded }
+              data: { type: "builded", data: builded }
             },
             {
               title: "Currently Listening",
