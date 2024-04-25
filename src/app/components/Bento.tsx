@@ -5,6 +5,7 @@ import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { getAccessToken, getCurrentPlayingTrack } from '../actions'
 
 const Bento = () => {
   return (
@@ -71,7 +72,9 @@ const BentoItem = ({
           data.data &&
           data.data.map((item: any) => {
             return <BentoSubItem data={item} key={item.title} />;
-          })}
+          })
+        }
+        {data.type === "spotify" && <Spotify />}
       </div>
       {data.type === "skills" && (
         <Link href={"/skills"} className="rounded-md px-[6px] py-1 border border-outline-sec bg-grey-card-sec text-sm font-medium flex items-center gap-1 justify-center">
@@ -81,6 +84,47 @@ const BentoItem = ({
     </div>
   );
 };
+
+const Spotify = async () => {
+  const accessToken = await getAccessToken();
+
+  if (!accessToken.data) return null;
+
+  const currentSong = await getCurrentPlayingTrack(accessToken.data)
+
+  return (
+    <div className="flex gap-3 items-center">
+      <div>
+        <img
+          src={currentSong.data.album.images[0].url}
+          alt={currentSong.data.name}
+          className="rounded-[8px] select-none w-[87px] h-auto"
+        />
+      </div>
+      <div className="flex flex-col">
+        <div className='flex flex-col'>
+          <h1 className="font-semibold tracking-tight text-base">
+            {currentSong.data.name}
+          </h1>
+          <a
+            href={currentSong.data.artists[0].external_urls.spotify}
+            target="_blank"
+            className="text-grey tracking-tight text-sm -mt-1 hover:underline"
+          >
+            {currentSong.data.artists[0].name}
+          </a>
+        </div>
+        <a
+          href={currentSong.data.external_urls.spotify}
+          target="_blank"
+          className="mt-2 rounded-md px-[6px] py-1 border border-outline-sec bg-grey-card-sec text-sm font-medium flex items-center gap-1 justify-center"
+        >
+          Listen with me <ChevronRight width={14} height={14} />
+        </a>
+      </div>
+    </div>
+  );
+}
 
 const BentoSubItem = ({ data }: { data: Skills | Websites }) => {
   return (
